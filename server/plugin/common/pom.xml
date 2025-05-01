@@ -5,7 +5,7 @@
 
 	<groupId>com.swy</groupId>
 	<artifactId>common</artifactId>
-	<version>0.0.1</version>
+	<version>${swy.common.verison}</version>
 
 	<parent>
 		<groupId>com.swy</groupId>
@@ -20,39 +20,64 @@
 	
 	<licenses>
         <license>
-            <name>GNU Affero General Public License v3.0</name>
-            <url>https://www.gnu.org/licenses/agpl-3.0.html</url>
+            <name>Mozilla Public License 2.0</name>
+            <url>https://www.mozilla.org/en-US/MPL/2.0/</url>
             <distribution>repo</distribution>
             <comments>
-                GNU Affero通用公共许可证第3版 - 这是一个强制开源的许可证，要求：
-                1. 必须开放源代码
-                2. 修改后的代码必须使用相同许可证
-                3. 通过网络使用该软件的用户必须能够获取源代码
-                4. 必须保留版权声明和许可证声明
+                Mozilla公共许可证2.0版 - 这是一个灵活的开源许可证，特点：
+                1. 文件级别的共享要求 - 只需开放修改过的源文件
+                2. 允许将MPL代码与私有代码混合使用
+                3. 修改的MPL文件必须保持相同许可证
+                4. 新增文件可以使用不同许可证
+                5. 必须保留版权声明和许可证声明
+                
+                补充条款：
+                1. 未经版权所有者明确许可，禁止商业使用
+                2. 版权所有者保留商业化专有权利
             </comments>
         </license>
     </licenses>
 
 	<developers>
-		<developer>swy</developer>
-		<developer/>
-	</developers>
-	<scm>
-		<connection/>
-		<developerConnection/>
-		<tag/>
-		<url/>
-	</scm>
+        <developer>
+            <id>swy</id>
+            <name>SkyWithYou</name>
+            <roles>
+                <role>Project lead</role>
+                <role>Developer</role>
+            </roles>
+        </developer>
+    </developers>
+
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.groovy</groupId>
+			<artifactId>groovy-all</artifactId>
 		</dependency>
 	</dependencies>
 

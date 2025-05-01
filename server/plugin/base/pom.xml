@@ -9,7 +9,7 @@
     <packaging>pom</packaging>
 
     <name>base</name>
-    <description>Game Base</description>
+    <description>Base Framework Management Module - Core version control and dependency management center for the project | 基础框架管理模块 - 项目核心版本控制与依赖管理中心，负责统一管理项目版本、依赖和构建配置，确保子模块间的依赖一致性和兼容性</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -20,18 +20,34 @@
 
     <licenses>
         <license>
-            <name>GNU Affero General Public License v3.0</name>
-            <url>https://www.gnu.org/licenses/agpl-3.0.html</url>
+            <name>Mozilla Public License 2.0</name>
+            <url>https://www.mozilla.org/en-US/MPL/2.0/</url>
             <distribution>repo</distribution>
             <comments>
-                GNU Affero通用公共许可证第3版 - 这是一个强制开源的许可证，要求：
-                1. 必须开放源代码
-                2. 修改后的代码必须使用相同许可证
-                3. 通过网络使用该软件的用户必须能够获取源代码
-                4. 必须保留版权声明和许可证声明
+                Mozilla公共许可证2.0版 - 这是一个灵活的开源许可证，特点：
+                1. 文件级别的共享要求 - 只需开放修改过的源文件
+                2. 允许将MPL代码与私有代码混合使用
+                3. 修改的MPL文件必须保持相同许可证
+                4. 新增文件可以使用不同许可证
+                5. 必须保留版权声明和许可证声明
+                
+                补充条款：
+                1. 未经版权所有者明确许可，禁止商业使用
+                2. 版权所有者保留商业化专有权利
             </comments>
         </license>
     </licenses>
+
+    <developers>
+        <developer>
+            <id>swy</id>
+            <name>SkyWithYou</name>
+            <roles>
+                <role>Project lead</role>
+                <role>Developer</role>
+            </roles>
+        </developer>
+    </developers>
 
 	<properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -40,6 +56,16 @@
         <maven.compiler.version>3.8.1</maven.compiler.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
+
+        <swy.common.verison>0.0.1</swy.common.verison>
+
+        <!-- 第三方依赖 -->
+        <guava.version>33.4.8-jre</guava.version>
+        <commons-io.version>2.19.0</commons-io.version>
+        <groovy-all.version>2.4.21</groovy-all.version>
+        <protobuf-java.version>4.30.2</protobuf-java.version>
+        <druid.version>1.2.24</druid.version>
+        <httpclient5.version>5.4.4</httpclient5.version>
 	</properties>
 
 	<dependencies>
@@ -60,6 +86,49 @@
 
 	<dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>com.swy</groupId>
+                <artifactId>common</artifactId>
+                <version>${swy.common.verison}</version>
+            </dependency>
+
+            <!-- 第三方依赖 -->
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${commons-io.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.codehaus.groovy</groupId>
+                <artifactId>groovy-all</artifactId>
+                <version>${groovy-all.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.protobuf</groupId>
+                <artifactId>protobuf-java</artifactId>
+                <version>${protobuf-java.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid</artifactId>
+                <version>${druid.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpclient5</artifactId>
+                <version>${httpclient5.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>commons-logging</groupId>
+                        <artifactId>commons-logging</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
 		</dependencies>
 	</dependencyManagement>
 </project>
