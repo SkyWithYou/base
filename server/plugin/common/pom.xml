@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.swy</groupId>
+	<artifactId>common</artifactId>
+	<version>0.0.1</version>
+
+	<parent>
+		<groupId>com.swy</groupId>
+		<artifactId>base</artifactId>
+		<version>0.0.1</version>
+		<relativePath/>
+	</parent>
+	
+	<name>common</name>
+	<description>Core Common Module - Provides fundamental utilities, shared components, and essential infrastructure for the base framework</description>
+	<url/>
+	
+	<licenses>
+        <license>
+            <name>GNU Affero General Public License v3.0</name>
+            <url>https://www.gnu.org/licenses/agpl-3.0.html</url>
+            <distribution>repo</distribution>
+            <comments>
+                GNU Affero通用公共许可证第3版 - 这是一个强制开源的许可证，要求：
+                1. 必须开放源代码
+                2. 修改后的代码必须使用相同许可证
+                3. 通过网络使用该软件的用户必须能够获取源代码
+                4. 必须保留版权声明和许可证声明
+            </comments>
+        </license>
+    </licenses>
+
+	<developers>
+		<developer>swy</developer>
+		<developer/>
+	</developers>
+	<scm>
+		<connection/>
+		<developerConnection/>
+		<tag/>
+		<url/>
+	</scm>
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
