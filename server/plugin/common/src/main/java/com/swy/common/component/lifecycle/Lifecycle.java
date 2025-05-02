@@ -11,12 +11,20 @@ package com.swy.common.component.lifecycle;
  */
 public interface Lifecycle {
 
+    int PRIORITY_LOWEST = 10;
+    int PRIORITY_LOW = 30;
+    int PRIORITY_NORMAL = 50;
+    int PRIORITY_HIGH = 70;
+    int PRIORITY_HIGHEST = 90;
+
     /**
      * 获取当前状态
      *
      * @return 当前生命周期状态
      */
     LifecycleState getState();
+
+    int getPriority();
 
     /**
      * 初始化实体
