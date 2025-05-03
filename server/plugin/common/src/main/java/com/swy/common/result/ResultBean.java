@@ -1,9 +1,9 @@
-﻿package com.swy.common.result;
+package com.swy.common.result;
 
 /**
- * 返回结果类
  *
- * @author SkyWithYou
+ * @author swy
+ * @param <T>
  */
 public class ResultBean<T> {
 }

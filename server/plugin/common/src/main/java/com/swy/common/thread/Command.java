@@ -1,4 +1,4 @@
-﻿package com.swy.common.thread;
+package com.swy.common.thread;
 
 import com.swy.common.result.ResultBean;
 

@@ -1,4 +1,4 @@
-﻿package com.swy.common.result;
+package com.swy.common.result;
 
 /**
  * 创建结果bean
