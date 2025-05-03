@@ -24,7 +24,14 @@ public interface Lifecycle {
      */
     LifecycleState getState();
 
-    int getPriority();
+    /**
+     * 获取优先级
+     *
+     * @return 当前生命周期优先级
+     */
+    default int getPriority(){
+        return PRIORITY_NORMAL;
+    }
 
     /**
      * 初始化实体

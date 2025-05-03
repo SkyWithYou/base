@@ -329,7 +329,7 @@ public abstract class AbstractLifecycleBase implements Lifecycle, Comparable<Abs
      * 比较优先级
      * <p>
      * 实现Comparable接口，用于基于优先级的排序
-     * 优先级值小的排在前面（优先级高）
+     * 优先级值大的排在前面（优先级高）
      * </p>
      *
      * @param other 要比较的对象
@@ -337,6 +337,6 @@ public abstract class AbstractLifecycleBase implements Lifecycle, Comparable<Abs
      */
     @Override
     public int compareTo(AbstractLifecycleBase other) {
-        return Integer.compare(this.getPriority(), other.getPriority());
+        return Integer.compare(other.getPriority(), this.getPriority());
     }
 }

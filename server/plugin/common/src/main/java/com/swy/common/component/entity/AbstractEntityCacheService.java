@@ -6,6 +6,7 @@ import com.google.common.cache.RemovalListener;
 import com.google.common.collect.Maps;
 import com.swy.common.component.BaseComponent;
 import com.swy.common.component.lifecycle.AbstractLifecycleBase;
+import com.swy.common.component.service.AbstractService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -24,7 +25,7 @@ import java.util.concurrent.TimeUnit;
  */
 @Slf4j
 public abstract class AbstractEntityCacheService<E extends AbstractEntity<C>, C extends BaseComponent>
-        extends AbstractLifecycleBase {
+        extends AbstractService {
 
     /**
      * 常驻实体容器，使用ConcurrentHashMap保证线程安全
@@ -113,16 +114,27 @@ public abstract class AbstractEntityCacheService<E extends AbstractEntity<C>, C 
         // 销毁缓存中的实体
         entityCache.invalidateAll();
 
-        // 销毁常驻实体
+        // 停止常驻实体
         for (Map.Entry<Long, E> entry : residentEntities.entrySet()) {
             try {
                 E e = entry.getValue();
                 e.stop();
+            } catch (Exception e) {
+                log.error("常驻实体停止失败: {}, 错误: {}", entry.getKey(), e.getMessage());
+            }
+        }
+
+        // 销毁常驻实体
+        for (Map.Entry<Long, E> entry : residentEntities.entrySet()) {
+            try {
+                E e = entry.getValue();
                 e.destroy();
             } catch (Exception e) {
                 log.error("常驻实体销毁失败: {}, 错误: {}", entry.getKey(), e.getMessage());
             }
         }
+
+
         residentEntities.clear();
 
         super.doStop();

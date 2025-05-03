@@ -131,7 +131,7 @@ public abstract class AbstractEntity<C extends BaseComponent> extends AbstractLi
     @Override
     protected void doInitialize() throws Exception {
         super.doInitialize();
-        // 初始化所有组件，按优先级排序（优先级值小的先初始化）
+        // 初始化所有组件，按优先级排序（优先级值大的先初始化）
         List<BaseComponent> sortedComponents = new ArrayList<>(componentMap.values());
         Collections.sort(sortedComponents);
 
@@ -158,7 +158,7 @@ public abstract class AbstractEntity<C extends BaseComponent> extends AbstractLi
     @Override
     protected void doStart() throws Exception {
         super.doStart();
-        // 启动所有组件，按优先级排序（优先级值小的先启动）
+        // 启动所有组件，按优先级排序（优先级值大的先启动）
         List<BaseComponent> sortedComponents = new ArrayList<>(componentMap.values());
         Collections.sort(sortedComponents);
 
@@ -184,9 +184,9 @@ public abstract class AbstractEntity<C extends BaseComponent> extends AbstractLi
      */
     @Override
     protected void doPause() throws Exception {
-        // 暂停所有组件，按优先级逆序排序（优先级值大的先暂停）
+        // 暂停所有组件，按优先级逆序排序（优先级值小的先暂停）
         List<BaseComponent> sortedComponents = new ArrayList<>(componentMap.values());
-        Collections.sort(sortedComponents, Collections.reverseOrder());
+        sortedComponents.sort(Collections.reverseOrder());
 
         // 使用try-catch处理每个组件的异常
         for (BaseComponent component : sortedComponents) {
@@ -212,7 +212,7 @@ public abstract class AbstractEntity<C extends BaseComponent> extends AbstractLi
     @Override
     protected void doResume() throws Exception {
         super.doResume();
-        // 恢复所有组件，按优先级排序（优先级值小的先恢复）
+        // 恢复所有组件，按优先级排序（优先级值大的先恢复）
         List<BaseComponent> sortedComponents = new ArrayList<>(componentMap.values());
         Collections.sort(sortedComponents);
 
@@ -238,9 +238,9 @@ public abstract class AbstractEntity<C extends BaseComponent> extends AbstractLi
      */
     @Override
     protected void doStop() throws Exception {
-        // 停止所有组件，按优先级逆序排序（优先级值大的先停止）
+        // 停止所有组件，按优先级逆序排序（优先级值小的先停止）
         List<BaseComponent> sortedComponents = new ArrayList<>(componentMap.values());
-        Collections.sort(sortedComponents, Collections.reverseOrder());
+        sortedComponents.sort(Collections.reverseOrder());
 
         // 使用try-catch处理每个组件的异常
         for (BaseComponent component : sortedComponents) {
@@ -265,7 +265,7 @@ public abstract class AbstractEntity<C extends BaseComponent> extends AbstractLi
      */
     @Override
     protected void doDestroy() throws Exception {
-        // 销毁所有组件，按优先级逆序排序（优先级值大的先销毁）
+        // 销毁所有组件，按优先级逆序排序（优先级值小的先销毁）
         List<BaseComponent> sortedComponents = new ArrayList<>(componentMap.values());
         Collections.sort(sortedComponents, Collections.reverseOrder());
 
