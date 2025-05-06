@@ -28,5 +28,4 @@ public interface Command {
      */
     Future<ResultBean> cancel();
 
-
 }
