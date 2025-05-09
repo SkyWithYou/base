@@ -2,12 +2,11 @@ package com.swy.common.thread;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.concurrent.locks.ReentrantLock;
-
-import org.springframework.stereotype.Component;
 
 /**
  * 命令线程池管理器
@@ -83,7 +82,7 @@ public class CommandThreadPoolManager {
         commandQueues.add(commandQueue);
         // 按照优先级排序，确保高优先级的队列在前面
         sortQueues();
-        log.info("注册命令队列: {}, 优先级: {}", commandQueue.getToken(), commandQueue.getPriority());
+        log.info("注册命令队列: {}, 优先级: {}", commandQueue.getToken(), commandQueue.getInitPriority());
     }
 
     /**
@@ -123,9 +122,9 @@ public class CommandThreadPoolManager {
             try {
                 // 重新排序队列，确保高优先级的队列优先处理
                 sortQueues();
-                
+
                 boolean processed = false;
-                
+
                 // 尝试获取不公平锁
                 if (queueLock.tryLock(100, TimeUnit.MILLISECONDS)) {
                     try {
@@ -137,7 +136,7 @@ public class CommandThreadPoolManager {
                         queueLock.unlock();
                     }
                 }
-                
+
                 // 如果没有处理任何任务，短暂休眠避免CPU空转
                 if (!processed) {
                     Thread.sleep(10);
@@ -164,13 +163,13 @@ public class CommandThreadPoolManager {
         if (commands.isEmpty()) {
             return false;
         }
-        
+
         // 从队列中获取命令但不移除
         C command = commands.peek();
         if (command == null) {
             return false;
         }
-        
+
         // 提交到线程池执行
         threadPool.execute(() -> {
             try {
@@ -184,7 +183,7 @@ public class CommandThreadPoolManager {
                 log.error("执行命令时发生异常", e);
             }
         });
-        
+
         return true;
     }
 
@@ -202,19 +201,19 @@ public class CommandThreadPoolManager {
         status.put("queueSize", threadPool.getQueue().size());
         status.put("taskCount", threadPool.getTaskCount());
         status.put("completedTaskCount", threadPool.getCompletedTaskCount());
-        
+
         List<Map<String, Object>> queuesInfo = new ArrayList<>();
         for (BaseCommandQueue<?> queue : commandQueues) {
             Map<String, Object> queueInfo = new HashMap<>();
             queueInfo.put("token", queue.getToken());
-            queueInfo.put("priority", queue.getPriority());
+            queueInfo.put("priority", queue.getInitPriority());
             queueInfo.put("adjustedPriority", queue.priorityFix());
             queueInfo.put("queueSize", queue.getCommands().size());
             queueInfo.put("queueLimit", queue.getQueueLimit());
             queuesInfo.add(queueInfo);
         }
         status.put("queues", queuesInfo);
-        
+
         return status;
     }
 }

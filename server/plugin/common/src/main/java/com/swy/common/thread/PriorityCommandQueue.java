@@ -3,7 +3,6 @@ package com.swy.common.thread;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -49,7 +48,7 @@ public class PriorityCommandQueue<C extends Command> extends BaseCommandQueue<C>
         this.priority = priority;
         this.queueLimit = queueLimit;
         this.queueType = queueType;
-    } 
+    }
 
     @Override
     protected Queue<C> buildQueue() {
@@ -76,7 +75,7 @@ public class PriorityCommandQueue<C extends Command> extends BaseCommandQueue<C>
 
         boolean result = getCommands().offer(command);
         if (result) {
-            log.debug("添加命令到队列: {}, 命令ID: {}, 队列大小: {}", 
+            log.debug("添加命令到队列: {}, 命令ID: {}, 队列大小: {}",
                     getToken(), command.commandId(), getCommands().size());
         }
         return result;
@@ -86,8 +85,8 @@ public class PriorityCommandQueue<C extends Command> extends BaseCommandQueue<C>
     public void run() {
         // 将队列注册到线程池管理器
         CommandThreadPoolManager.getInstance().registerQueue(this);
-        log.info("命令队列已注册到线程池管理器: {}, 优先级: {}, 类型: {}", 
-                getToken(), getPriority(), getQueueType());
+        log.info("命令队列已注册到线程池管理器: {}, 优先级: {}, 类型: {}",
+                getToken(), getInitPriority(), getQueueType());
     }
 
     /**
