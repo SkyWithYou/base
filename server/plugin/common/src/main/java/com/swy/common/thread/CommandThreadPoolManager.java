@@ -7,6 +7,8 @@ import java.util.*;
 import java.util.concurrent.*;
 import java.util.concurrent.locks.ReentrantLock;
 
+import org.springframework.stereotype.Component;
+
 /**
  * 命令线程池管理器
  * <p>
@@ -16,12 +18,8 @@ import java.util.concurrent.locks.ReentrantLock;
  * @author SkyWithYou
  */
 @Slf4j
+@Component
 public class CommandThreadPoolManager {
-
-    /**
-     * 单例实例
-     */
-    private static volatile CommandThreadPoolManager instance;
 
     /**
      * 命令队列集合
@@ -71,22 +69,6 @@ public class CommandThreadPoolManager {
         // 使用不公平锁，确保高优先级任务能够优先获取锁
         this.queueLock = new ReentrantLock(false);
         this.running = false;
-    }
-
-    /**
-     * 获取单例实例
-     *
-     * @return 线程池管理器实例
-     */
-    public static CommandThreadPoolManager getInstance() {
-        if (instance == null) {
-            synchronized (CommandThreadPoolManager.class) {
-                if (instance == null) {
-                    instance = new CommandThreadPoolManager();
-                }
-            }
-        }
-        return instance;
     }
 
     /**

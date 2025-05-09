@@ -36,10 +36,25 @@ public abstract class BaseCommandQueue<C extends Command> implements Runnable {
         this.commands = commands;
     }
 
+    /**
+     * 获取优先级
+     *
+     * @return 优先级
+     */
     public abstract int getPriority();
 
+    /**
+     * 获取队列限制
+     *
+     * @return 队列限制
+     */
     public abstract int getQueueLimit();
 
+    /**
+     * 构建队列
+     *
+     * @return 队列
+     */
     protected abstract Queue<C> buildQueue();
 
     /**

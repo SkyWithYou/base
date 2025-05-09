@@ -49,17 +49,7 @@ public class PriorityCommandQueue<C extends Command> extends BaseCommandQueue<C>
         this.priority = priority;
         this.queueLimit = queueLimit;
         this.queueType = queueType;
-    }
-
-    @Override
-    public int getPriority() {
-        return priority;
-    }
-
-    @Override
-    public int getQueueLimit() {
-        return queueLimit;
-    }
+    } 
 
     @Override
     protected Queue<C> buildQueue() {
