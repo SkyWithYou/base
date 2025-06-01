@@ -1,11 +1,15 @@
 package com.swy.common.result;
 
+import lombok.Data;
+
 /**
  * 通用结果封装类
  *
  * @author swy
  * @param <T> 数据泛型
  */
+
+ @Data
 public class ResultBean<T> {
 
     /**
@@ -137,60 +141,6 @@ public class ResultBean<T> {
      */
     public static <T> ResultBean<T> error() {
         return error(500, "操作失败");
-    }
-
-    /**
-     * 获取数据
-     *
-     * @return 数据
-     */
-    public T getData() {
-        return data;
-    }
-
-    /**
-     * 设置数据
-     *
-     * @param data 数据
-     */
-    public void setData(T data) {
-        this.data = data;
-    }
-
-    /**
-     * 获取错误码
-     *
-     * @return 错误码
-     */
-    public int getCode() {
-        return code;
-    }
-
-    /**
-     * 设置错误码
-     *
-     * @param code 错误码
-     */
-    public void setCode(int code) {
-        this.code = code;
-    }
-
-    /**
-     * 获取消息
-     *
-     * @return 消息
-     */
-    public String getMessage() {
-        return message;
-    }
-
-    /**
-     * 设置消息
-     *
-     * @param message 消息
-     */
-    public void setMessage(String message) {
-        this.message = message;
     }
 
     /**

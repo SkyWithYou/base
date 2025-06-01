@@ -28,4 +28,14 @@ public interface Command {
      */
     Future<ResultBean> cancel();
 
+    /**
+     * 开始时间
+     */
+    long startTime();
+
+    /**
+     * 是否取消
+     * @return
+     */
+    boolean isCancel();
 }

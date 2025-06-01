@@ -4,6 +4,7 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.swy.common.component.lifecycle.AbstractLifecycleBase;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.*;
@@ -22,6 +23,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * @author SkyWithYou
  */
 @Slf4j
+@Setter
 public class CommandThreadPoolLifecycle extends AbstractLifecycleBase {
 
     protected final static int CACHE_EXPIRED = 30;
@@ -78,10 +80,9 @@ public class CommandThreadPoolLifecycle extends AbstractLifecycleBase {
 
     public CommandThreadPoolLifecycle(String threadPoolName, int corePoolSize) {
         this.commandQueues = newQueueCache();
+
         // 创建线程池
-        BlockingQueue<Runnable> workQueue = new LinkedBlockingQueue<>(1000);
         ThreadFactory threadFactory = new NamedThreadFactory(threadPoolName);
-        RejectedExecutionHandler handler = new ThreadPoolExecutor.CallerRunsPolicy();
         this.threadPool = Executors.newScheduledThreadPool(corePoolSize, threadFactory);
 
         // 使用不公平锁，确保高优先级任务能够优先获取锁
@@ -103,29 +104,8 @@ public class CommandThreadPoolLifecycle extends AbstractLifecycleBase {
         if (commandQueue == null) {
             return;
         }
-        commandQueues.add(commandQueue);
-        // 按照优先级排序，确保高优先级的队列在前面
-        sortQueues();
-//        log.info("注册命令队列: {}, 优先级: {}", commandQueue.getToken(), commandQueue.getPriority());
-    }
-
-    /**
-     * 对队列按照优先级进行排序
-     */
-    private void sortQueues() {
-        commandQueues.sort((q1, q2) -> Double.compare(q2.priorityFix(), q1.priorityFix()));
-    }
-
-    /**
-     * 执行初始化操作
-     *
-     * @throws Exception 初始化过程中可能发生的异常
-     */
-    @Override
-    protected void doInitialize() throws Exception {
-        super.doInitialize();
-        log.info("命令线程池初始化，核心线程数: {}, 最大线程数: {}",
-                threadPool.getCorePoolSize(), threadPool.getMaximumPoolSize());
+        commandQueues.put(commandQueue.getToken(), commandQueue);
+       log.info("注册命令队列: {}, 优先级: {}", commandQueue.getToken(), commandQueue.getCurrentPriority());
     }
 
     /**
@@ -136,7 +116,7 @@ public class CommandThreadPoolLifecycle extends AbstractLifecycleBase {
     @Override
     protected void doStart() throws Exception {
         super.doStart();
-        running = true;
+
         // 启动队列消费线程
         threadPool.execute(this::consumeQueues);
         log.info("命令线程池已启动");
@@ -149,7 +129,8 @@ public class CommandThreadPoolLifecycle extends AbstractLifecycleBase {
      */
     @Override
     protected void doStop() throws Exception {
-        running = false;
+        super.doStop();
+
         // 等待线程池任务完成
         threadPool.shutdown();
         try {
@@ -176,7 +157,7 @@ public class CommandThreadPoolLifecycle extends AbstractLifecycleBase {
             threadPool.shutdownNow();
         }
         // 清空队列集合
-        commandQueues.clear();
+        commandQueues.invalidateAll();
         log.info("命令线程池已销毁");
         super.doDestroy();
     }
@@ -185,11 +166,8 @@ public class CommandThreadPoolLifecycle extends AbstractLifecycleBase {
      * 消费队列任务
      */
     private void consumeQueues() {
-        while (running) {
+        while (this.isRunning()) {
             try {
-                // 重新排序队列，确保高优先级的队列优先处理
-                sortQueues();
-
                 boolean processed = false;
 
                 // 尝试获取不公平锁

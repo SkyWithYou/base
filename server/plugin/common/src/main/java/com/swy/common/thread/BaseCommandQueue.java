@@ -1,15 +1,19 @@
 package com.swy.common.thread;
 
+import lombok.Data;
 import lombok.Getter;
 
 import java.util.Queue;
+import java.util.concurrent.Future;
+
+import com.swy.common.result.ResultBean;
 
 /**
  * 命令队列
  *
  * @author SkyWithYou
  */
-@Getter
+@Data
 public abstract class BaseCommandQueue<C extends Command> implements Runnable {
 
     /**
@@ -33,9 +37,33 @@ public abstract class BaseCommandQueue<C extends Command> implements Runnable {
     private final double LOW_USAGE_THRESHOLD = 0.3;
 
     /**
+     * 当前执行的命令
+     */
+    private C currentCommand;
+
+    /**
+     * 当前执行的命令结果
+     */
+    private Future<ResultBean> currentCommandFuture;
+
+    /**
+     * 命令执行结果
+     */
+
+    /**
      * 当前优先级
      */
     private int currentPriority;
+
+    /**
+     * 开始时间
+     */
+    private int startTime;
+
+    /*
+     * 是否撤回
+     */
+    private boolean cancel;
 
     public BaseCommandQueue(String token) {
         this.token = token;
@@ -98,5 +126,36 @@ public abstract class BaseCommandQueue<C extends Command> implements Runnable {
         this.currentPriority = (int) (getInitPriority() * adjustmentFactor);
 
         return this.currentPriority;
+    }
+
+    public void run() {
+        // 记录开始时间
+        this.startTime = TimeUtil.getCurrentTime();
+
+        // 执行命令
+        while (true) {
+            // 检查是否需要撤回
+            if (this.isCancel()) {
+                this.startTime = 0;
+                break;
+            }
+
+            // 检查是否有新的命令
+            this.currentCommand = commands.poll();
+            if (currentCommand != null) {
+                // 检查命令是否需要撤回
+                if (currentCommand.isCancel()) {
+                    continue;
+                }
+
+                // 执行命令
+                this.currentCommandFuture = currentCommand.execute();
+            } else {
+                // 没有新的命令，退出循环
+                this.currentCommandFuture = null;
+                this.startTime = 0;
+                break;
+            }
+        }
     }
 }
