@@ -12,8 +12,14 @@ import java.util.Queue;
 @Getter
 public abstract class BaseCommandQueue<C extends Command> implements Runnable {
 
+    /**
+     * 队列令牌
+     */
     private final String token;
 
+    /**
+     * 命令队列
+     */
     private final Queue<C> commands;
 
     // 避免使用魔法值

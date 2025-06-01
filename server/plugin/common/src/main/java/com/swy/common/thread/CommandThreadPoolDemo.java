@@ -59,13 +59,13 @@ public class CommandThreadPoolDemo {
         }
 
         // 打印线程池状态
-        log.info("线程池初始状态: {}", CommandThreadPoolManager.getInstance().getThreadPoolStatus());
+//        log.info("线程池初始状态: {}", CommandThreadPoolManager.getInstance().getThreadPoolStatus());
 
         // 等待一段时间，让任务执行
         Thread.sleep(2000);
 
         // 再次打印线程池状态
-        log.info("线程池执行后状态: {}", CommandThreadPoolManager.getInstance().getThreadPoolStatus());
+//        log.info("线程池执行后状态: {}", CommandThreadPoolManager.getInstance().getThreadPoolStatus());
 
         // 停止线程池
         CommandThreadPoolManager.getInstance().stop();

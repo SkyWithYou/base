@@ -114,7 +114,7 @@ public class ResultBean<T> {
      * @param message 错误消息
      * @return 结果对象
      */
-    public static <T> ResultBean<T> fail(int code, String message) {
+    public static <T> ResultBean<T> error(int code, String message) {
         return new ResultBean<>(null, code, message);
     }
     
@@ -125,8 +125,8 @@ public class ResultBean<T> {
      * @param message 错误消息
      * @return 结果对象
      */
-    public static <T> ResultBean<T> fail(String message) {
-        return fail(500, message);
+    public static <T> ResultBean<T> error(String message) {
+        return error(500, message);
     }
     
     /**
@@ -135,8 +135,8 @@ public class ResultBean<T> {
      * @param <T> 数据泛型
      * @return 结果对象
      */
-    public static <T> ResultBean<T> fail() {
-        return fail(500, "操作失败");
+    public static <T> ResultBean<T> error() {
+        return error(500, "操作失败");
     }
 
     /**
