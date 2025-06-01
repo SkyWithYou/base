@@ -13,7 +13,7 @@ import java.util.Queue;
 public abstract class BaseCommandQueue<C extends Command> implements Runnable {
 
     /**
-     * 队列令牌
+     * 队列token
      */
     private final String token;
 
@@ -32,6 +32,11 @@ public abstract class BaseCommandQueue<C extends Command> implements Runnable {
      */
     private final double LOW_USAGE_THRESHOLD = 0.3;
 
+    /**
+     * 当前优先级
+     */
+    private int currentPriority;
+
     public BaseCommandQueue(String token) {
         this.token = token;
         this.commands = buildQueue();
@@ -42,10 +47,25 @@ public abstract class BaseCommandQueue<C extends Command> implements Runnable {
         this.commands = commands;
     }
 
-    public abstract int getPriority();
+    /**
+     * 获取初始优先级
+     *
+     * @return 优先级
+     */
+    public abstract int getInitPriority();
 
+    /**
+     * 获取队列限制
+     *
+     * @return 队列限制
+     */
     public abstract int getQueueLimit();
 
+    /**
+     * 构建队列
+     *
+     * @return 队列
+     */
     protected abstract Queue<C> buildQueue();
 
     /**
@@ -63,18 +83,20 @@ public abstract class BaseCommandQueue<C extends Command> implements Runnable {
 
         // 如果队列大小小于最小阈值或使用率低于低使用率阈值，直接返回原始优先级
         if (queueSize < MIN_COMMAND_THRESHOLD || queueSize / queueLimit < LOW_USAGE_THRESHOLD) {
-            return getPriority();
+            return getInitPriority();
         }
 
         // 防止除零错误
         if (queueLimit <= 0) {
-            return getPriority();
+            return getInitPriority();
         }
 
         // 动态调整因子，根据队列使用率调整优先级
         double usageRate = queueSize / queueLimit;
         double adjustmentFactor = 1 + Math.pow(usageRate, 2) * 2;
 
-        return getPriority() * adjustmentFactor;
+        this.currentPriority = (int) (getInitPriority() * adjustmentFactor);
+
+        return this.currentPriority;
     }
 }

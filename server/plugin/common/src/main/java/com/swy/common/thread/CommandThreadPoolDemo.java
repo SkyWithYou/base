@@ -101,7 +101,7 @@ public class CommandThreadPoolDemo {
                 future.complete(ResultBean.success("命令执行成功: " + name));
             } catch (Exception e) {
                 log.error("命令执行异常", e);
-                future.complete(ResultBean.error("命令执行失败: " + e.getMessage()));
+                future.complete(ResultBean.fail("命令执行失败: " + e.getMessage()));
             }
             return future;
         }
